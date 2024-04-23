@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers("/agendas").permitAll()
                         .requestMatchers("/materiais").permitAll()
                         .requestMatchers("/error").permitAll()
-                        .anyRequest().authenticated() // Require authentication for other endpoints
+                        .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(oath2 ->
