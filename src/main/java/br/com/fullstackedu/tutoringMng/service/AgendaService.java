@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -158,6 +159,34 @@ public class AgendaService {
             }
         } catch (Exception e) {
             log.error("Falha ao buscar Agendas para o Tutor id {} . Erro: {}", targetId, e.getMessage());
+            return new AgendaResponse(false, LocalDateTime.now() , e.getMessage() , null, HttpStatus.INTERNAL_SERVER_ERROR );
+        }
+    }
+
+    public AgendaResponse getFutureAgendasByAlunoId(long targetId) {
+        try {
+            List<AgendaEntity> agendasByAlunoId = agendaRepository.findFutureAgendasByAlunoId(targetId, LocalDate.now());
+            if (agendasByAlunoId.isEmpty()) {
+                return new AgendaResponse(true, LocalDateTime.now(), "Nenhum registro encontrado para o Aluno id " + targetId , null, HttpStatus.NOT_FOUND);
+            } else {
+                return new AgendaResponse(true, LocalDateTime.now() , "Registros encontrados: " + agendasByAlunoId.size() , agendasByAlunoId,  HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            log.error("Falha ao buscar futuras Agendas para o Aluno id {} . Erro: {}", targetId, e.getMessage());
+            return new AgendaResponse(false, LocalDateTime.now() , e.getMessage() , null, HttpStatus.INTERNAL_SERVER_ERROR );
+        }
+    }
+
+    public AgendaResponse getFutureAgendasByTutorId(long targetId) {
+        try {
+            List<AgendaEntity> agendasByTutorId = agendaRepository.findFutureAgendasByTutorId(targetId, LocalDate.now());
+            if (agendasByTutorId.isEmpty()) {
+                return new AgendaResponse(true, LocalDateTime.now(), "Nenhum registro encontrado para o Tutor id " + targetId , null, HttpStatus.NOT_FOUND);
+            } else {
+                return new AgendaResponse(true, LocalDateTime.now() , "Registros encontrados:" + agendasByTutorId.size() , agendasByTutorId,  HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            log.error("Falha ao buscar futuras Agendas para o Tutor id {} . Erro: {}", targetId, e.getMessage());
             return new AgendaResponse(false, LocalDateTime.now() , e.getMessage() , null, HttpStatus.INTERNAL_SERVER_ERROR );
         }
     }

@@ -56,6 +56,17 @@ public class AgendaController {
         }
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
+    @GetMapping("/aluno-id/{targetId}/future")
+    public ResponseEntity<AgendaResponse> getFutureAgendaByAlunoId(@PathVariable long targetId) {
+        log.info("GET /agendamentos/aluno-id/{targetId}/future");
+        AgendaResponse response = agendaService.getFutureAgendasByAlunoId(targetId);
+        if (response.success()){
+            log.info("GET /agendamentos/aluno-id/{targetId}/future -> 200 ");
+        } else {
+            log.error("POST /agendamentos/aluno-id/{targetId}/future -> Erro ao buscar registros: [{}].", response.message());
+        }
+        return ResponseEntity.status(response.httpStatus()).body(response);
+    }
 
     @GetMapping("/tutor-id/{targetId}")
     public ResponseEntity<AgendaResponse> getAgendaByTutorId(@PathVariable long targetId) {
@@ -69,6 +80,18 @@ public class AgendaController {
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
 
+    //future schedulings
+    @GetMapping("/tutor-id/{targetId}/future")
+    public ResponseEntity<AgendaResponse> getFutureAgendaByTutorId(@PathVariable long targetId) {
+        log.info("GET /agendamentos/tutor-id/{targetId}/future");
+        AgendaResponse response = agendaService.getFutureAgendasByTutorId(targetId);
+        if (response.success()){
+            log.info("GET /agendamentos/tutor-id/{targetId}/future -> 200 ");
+        } else {
+            log.error("POST /agendamentos/tutor-id/{targetId}/future -> Erro ao buscar registros: [{}].", response.message());
+        }
+        return ResponseEntity.status(response.httpStatus()).body(response);
+    }
 
     @PostMapping()
     public ResponseEntity<AgendaResponse> newAgenda(
