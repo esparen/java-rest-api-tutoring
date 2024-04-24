@@ -135,7 +135,7 @@ public class AgendaService {
 
     public AgendaResponse getByAlunoId(long targetId) {
         try {
-            List<AgendaEntity> agendasByAlunoId = agendaRepository.findAllByAlunoIdOrderByDataDesc(targetId);
+            List<AgendaEntity> agendasByAlunoId = agendaRepository.findAllByAlunoIdOrderByDataAsc(targetId);
             if (agendasByAlunoId.isEmpty()) {
                 return new AgendaResponse(true, LocalDateTime.now(), "Nenhum registro encontrado para o Aluno id " + targetId , null, HttpStatus.NOT_FOUND);
             } else {
@@ -150,7 +150,7 @@ public class AgendaService {
 
     public AgendaResponse getByTutorId(long targetId) {
         try {
-            List<AgendaEntity> agendasByTutorId = agendaRepository.findAllByTutor_IdOrderByDataDesc(targetId);
+            List<AgendaEntity> agendasByTutorId = agendaRepository.findAllByTutor_IdOrderByDataAsc(targetId);
             if (agendasByTutorId.isEmpty()) {
                 return new AgendaResponse(true, LocalDateTime.now(), "Nenhum registro encontrado para o Tutor id " + targetId , null, HttpStatus.NOT_FOUND);
             } else {

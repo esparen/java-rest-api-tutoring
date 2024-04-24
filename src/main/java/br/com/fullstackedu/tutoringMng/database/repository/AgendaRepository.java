@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface AgendaRepository extends JpaRepository<AgendaEntity, Long> {
 
-    List<AgendaEntity> findAllByTutor_IdOrderByDataDesc(Long alunoId);
+    List<AgendaEntity> findAllByTutor_IdOrderByDataAsc(Long alunoId);
 
-    @Query("SELECT a FROM AgendaEntity a WHERE a.aluno.id = :alunoId ORDER BY a.data DESC")
-    List<AgendaEntity> findAllByAlunoIdOrderByDataDesc(@Param("alunoId") Long alunoId);
+    @Query("SELECT a FROM AgendaEntity a WHERE a.aluno.id = :alunoId ORDER BY a.data ASC")
+    List<AgendaEntity> findAllByAlunoIdOrderByDataAsc(@Param("alunoId") Long alunoId);
 
 }
