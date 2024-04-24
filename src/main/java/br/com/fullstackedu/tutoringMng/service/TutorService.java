@@ -65,9 +65,7 @@ public class TutorService {
 
     public TutorResponse updateTutor(Long targetId, TutorRequest tutorRequest) {
         try {
-            log.info("Bla bla bla bla bla bla");
             TutorEntity foundTutorEntity = tutorRepository.findById(targetId).orElse(null);
-            log.info("Tutor encontrado com sucesso: {}", foundTutorEntity);
             if (Objects.isNull(foundTutorEntity))
                 return new TutorResponse(false, LocalDateTime.now() , "Tutor id [" + targetId + "] não encontrado" , null, HttpStatus.NOT_FOUND);
 
