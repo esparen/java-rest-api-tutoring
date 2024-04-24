@@ -44,9 +44,9 @@ public class AgendaService {
         try {
             AgendaEntity agenda = agendaRepository.findById(targetId).orElse(null);
             if (Objects.isNull(agenda)) {
-                return new AgendaResponse(true, LocalDateTime.now(), "Nenhum registro encontrado com id " + targetId , null, HttpStatus.NOT_FOUND);
+                return new AgendaResponse(false, LocalDateTime.now(), "Nenhum registro encontrado com id " + targetId , null, HttpStatus.NOT_FOUND);
             } else {
-                return new AgendaResponse(false, LocalDateTime.now() , "Registro encontrado." , Collections.singletonList(agenda),  HttpStatus.OK);
+                return new AgendaResponse(true, LocalDateTime.now() , "Registro encontrado." , Collections.singletonList(agenda),  HttpStatus.OK);
             }
         } catch (Exception e) {
             log.error("Falha ao buscar Agenda cadastrado. Erro: {}", e.getMessage());
@@ -70,7 +70,7 @@ public class AgendaService {
             );
             log.info("Agenda inserida com sucesso: {}", savedAgendaEntity);
             return new AgendaResponse(
-                    false, LocalDateTime.now() ,
+                    true, LocalDateTime.now() ,
                     "Registro salvo com sucesso" ,
                     Collections.singletonList(savedAgendaEntity),
                     HttpStatus.CREATED
@@ -130,6 +130,35 @@ public class AgendaService {
         } catch (Exception e) {
             log.info("Falha ao remover Agenda. Erro: {}", e.getMessage());
             return new AgendaResponse(false, LocalDateTime.now(), e.getMessage(), null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public AgendaResponse getByAlunoId(long targetId) {
+        try {
+            List<AgendaEntity> agendasByAlunoId = agendaRepository.findAllByAlunoIdOrderByDataAsc(targetId);
+            if (agendasByAlunoId.isEmpty()) {
+                return new AgendaResponse(true, LocalDateTime.now(), "Nenhum registro encontrado para o Aluno id " + targetId , null, HttpStatus.NOT_FOUND);
+            } else {
+                return new AgendaResponse(true, LocalDateTime.now() , "Registros encontrados: " + agendasByAlunoId.size() , agendasByAlunoId,  HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            log.error("Falha ao buscar Agendas para o Aluno id {} . Erro: {}", targetId, e.getMessage());
+            return new AgendaResponse(false, LocalDateTime.now() , e.getMessage() , null, HttpStatus.INTERNAL_SERVER_ERROR );
+        }
+
+    }
+
+    public AgendaResponse getByTutorId(long targetId) {
+        try {
+            List<AgendaEntity> agendasByTutorId = agendaRepository.findAllByTutor_IdOrderByDataAsc(targetId);
+            if (agendasByTutorId.isEmpty()) {
+                return new AgendaResponse(true, LocalDateTime.now(), "Nenhum registro encontrado para o Tutor id " + targetId , null, HttpStatus.NOT_FOUND);
+            } else {
+                return new AgendaResponse(true, LocalDateTime.now() , "Registros encontrados:" + agendasByTutorId.size() , agendasByTutorId,  HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            log.error("Falha ao buscar Agendas para o Tutor id {} . Erro: {}", targetId, e.getMessage());
+            return new AgendaResponse(false, LocalDateTime.now() , e.getMessage() , null, HttpStatus.INTERNAL_SERVER_ERROR );
         }
     }
 }
