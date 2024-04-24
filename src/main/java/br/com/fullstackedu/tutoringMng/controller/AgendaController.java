@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@RequestMapping("/agendas")
+@RequestMapping("/agendamentos")
 @Validated
 @RequiredArgsConstructor
 public class AgendaController {
@@ -22,12 +22,12 @@ public class AgendaController {
 
     @GetMapping
     public ResponseEntity<AgendaResponse> getAllAgendas() {
-        log.info("GET /agendas");
+        log.info("GET /agendamentos");
         AgendaResponse response = agendaService.getAll();
         if (response.success()){
-            log.info("GET /agendas -> 200 ");
+            log.info("GET /agendamentos -> 200 ");
         } else {
-            log.error("POST /agendas -> Erro ao buscar registros: [{}].", response.message());
+            log.error("POST /agendamentos -> Erro ao buscar registros: [{}].", response.message());
         }
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
@@ -35,26 +35,51 @@ public class AgendaController {
 
     @GetMapping("/{targetId}")
     public ResponseEntity<AgendaResponse> getAgendaById(@PathVariable long targetId) {
-        log.info("GET /agendas/{targetId}");
+        log.info("GET /agendamentos/{targetId}");
         AgendaResponse response = agendaService.getById(targetId);
         if (response.success()){
-            log.info("GET /agendas/{targetId} -> 200 ");
+            log.info("GET /agendamentos/{targetId} -> 200 ");
         } else {
-            log.error("POST /agendas/{targetId} -> Erro ao buscar registros: [{}].", response.message());
+            log.error("POST /agendamentos/{targetId} -> Erro ao buscar registros: [{}].", response.message());
         }
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
+
+    @GetMapping("/aluno-id/{targetId}")
+    public ResponseEntity<AgendaResponse> getAgendaByAlunoId(@PathVariable long targetId) {
+        log.info("GET /agendamentos/aluno-id/{targetId}");
+        AgendaResponse response = agendaService.getByAlunoId(targetId);
+        if (response.success()){
+            log.info("GET /agendamentos/aluno-id/{targetId} -> 200 ");
+        } else {
+            log.error("POST /agendamentos/aluno-id/{targetId} -> Erro ao buscar registros: [{}].", response.message());
+        }
+        return ResponseEntity.status(response.httpStatus()).body(response);
+    }
+
+    @GetMapping("/tutor-id/{targetId}")
+    public ResponseEntity<AgendaResponse> getAgendaByTutorId(@PathVariable long targetId) {
+        log.info("GET /agendamentos/tutor-id/{targetId}");
+        AgendaResponse response = agendaService.getByTutorId(targetId);
+        if (response.success()){
+            log.info("GET /agendamentos/tutor-id/{targetId} -> 200 ");
+        } else {
+            log.error("POST /agendamentos/tutor-id/{targetId} -> Erro ao buscar registros: [{}].", response.message());
+        }
+        return ResponseEntity.status(response.httpStatus()).body(response);
+    }
+
 
     @PostMapping()
     public ResponseEntity<AgendaResponse> newAgenda(
             @Valid @RequestBody AgendaRequest agendaRequest
     ) throws Exception {
-        log.info("POST /agendas ");
+        log.info("POST /agendamentos ");
         AgendaResponse response = agendaService.insertAgenda(agendaRequest);
         if (response.success()){
-            log.info("POST /agendas -> Registro inserido com sucesso.");
+            log.info("POST /agendamentos -> Registro inserido com sucesso.");
         } else {
-            log.error("POST /agendas -> Erro ao inserir registro: [{}].", response.message());
+            log.error("POST /agendamentos -> Erro ao inserir registro: [{}].", response.message());
         }
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
@@ -64,12 +89,12 @@ public class AgendaController {
             @PathVariable Long targetId,
             @Valid @RequestBody AgendaRequest agendaRequest)
     {
-        log.info("PUT /agendas");
+        log.info("PUT /agendamentos");
         AgendaResponse response = agendaService.updateAgenda(targetId, agendaRequest);
         if (response.success()) {
-            log.info("PUT /agendas -> OK ");
+            log.info("PUT /agendamentos -> OK ");
         } else {
-            log.error("PUT /agendas -> 400");
+            log.error("PUT /agendamentos -> 400");
         }
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
@@ -78,12 +103,12 @@ public class AgendaController {
     public ResponseEntity<AgendaResponse> deleteAgenda(
             @PathVariable @NotNull(message = "ID de Docente é requerido para excluão") Long targetId)
     {
-        log.info("DELETE /agendas");
+        log.info("DELETE /agendamentos");
         AgendaResponse response = agendaService.deleteAgenda(targetId);
         if (response.success()) {
-            log.info("DELETE /agendas -> OK ");
+            log.info("DELETE /agendamentos -> OK ");
         } else {
-            log.error("DELETE /agendas -> 400");
+            log.error("DELETE /agendamentos -> 400");
         }
         return ResponseEntity.status(response.httpStatus()).body(response);
     }
