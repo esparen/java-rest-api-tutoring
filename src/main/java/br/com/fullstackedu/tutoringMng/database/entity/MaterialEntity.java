@@ -12,14 +12,18 @@ public class MaterialEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_agenda")
-    @NotNull(message = "Atributo id_agenda é obrigatorio")
-    private AgendaEntity agenda;
+    private String descricao;
 
     @Column(nullable = false, name = "caminho_arquivos")
     @NotNull(message = "Atributo caminho_arquivos é obrigatório")
     private String caminhoArquivos;
 
-    private String descricao;
+    @ManyToOne
+    @JoinColumn(name = "id_agenda")
+    @NotNull(message = "Atributo id_agenda é obrigatorio")
+    private AgendaEntity agenda;
+
+
+
+
 }
